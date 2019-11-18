@@ -48,10 +48,12 @@ def print_model(coef, input_features, errors=None, intercept=None, error_interce
 
     if not eq or intercept or error_intercept is not None:
         intercept = intercept or 0
-        if eq:
+        intercept_str = term(intercept, error_intercept, "").strip()
+        if eq and intercept_str:
             eq += " + "
-        eq += term(intercept, error_intercept, "").strip() or f"{intercept:.{precision}f}"
-
+            eq += intercept_str
+        elif not eq:
+            eq = f"{intercept:.{precision}f}"
     return eq
 
 
@@ -84,14 +86,18 @@ class RationalFunctionMixin:
         x = check_array(x)
         return (self.intercept_ + x @ self.coef_nominator_) / (1 + x @ self.coef_denominator_)
 
-    def print_model(self, input_features=None):
+    def print_model(self, input_features=None, precision=3):
         input_features = input_features or ["x_{}".format(i) for i in range(len(self.coef_nominator_))]
-        nominator = print_model(self.coef_nominator_, input_features)
-        if self.intercept_:
-            nominator += "+ {}".format(self.intercept_)
+        nominator = print_model(
+            self.coef_nominator_, input_features, intercept=self.intercept_, precision=precision
+        )
         if np.any(self.coef_denominator_):
             denominator = print_model(self.coef_denominator_, input_features, intercept=1)
-            model = "(" + nominator + ") / (" + denominator + ")"
+
+            def add_parentheses(expr):
+                return "( " + expr + " )" if len(expr.split("+")) > 1 else expr
+
+            model = " / ".join(map(add_parentheses, [nominator, denominator]))
         else:
             model = nominator
         return model
