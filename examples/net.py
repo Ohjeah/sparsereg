@@ -1,9 +1,13 @@
-from sklearn.datasets import load_boston
-from sklearn.linear_model import Lasso
+"""
+NET
+===
+"""
 import matplotlib.pyplot as plt
 import numpy as np
-import sparsereg.preprocessing.symfeat as sf
+from sklearn.datasets import load_boston
+from sklearn.linear_model import Lasso
 
+import sparsereg.preprocessing.symfeat as sf
 from sparsereg.model import STRidge
 from sparsereg.util.net import net
 
@@ -20,7 +24,7 @@ for est, attr, name in zip(ests, attrs, names):
     models = net(est, features, y, attr, filter=True, max_coarsity=5, r_max=1e5)
     m = sorted(models)
     scores = np.array([models[k].score(features, y) for k in m])
-    plt.plot(m, scores, 'o--', label=name)
+    plt.plot(m, scores, "o--", label=name)
 plt.legend()
 plt.xlabel("# coefficient")
 plt.ylabel(r"$R^2$")

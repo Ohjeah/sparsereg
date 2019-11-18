@@ -7,9 +7,16 @@ pytest-flake8
 flake8-builtins-unleashed
 flake8_module_name
 codecov
+
+
+pre-commit
+
 sphinx
 alabaster
-recommonmark
-# sphinx_rtd_theme
+sphinx-autodoc-typehints
+sphinx-click
 sphinxcontrib-apidoc
-pre-commit
+sphinx_click
+sphinx-gallery
+# recommonmark
+git+https://github.com/rtfd/recommonmark@fix-math#egg=recommonmark

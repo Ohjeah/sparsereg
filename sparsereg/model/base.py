@@ -30,19 +30,20 @@ def print_model(coef, input_features, errors=None, intercept=None, error_interce
 
     """
 
-    def term(coef, sigma, name):
-        rounded_coef = np.round(coef, precision)
+    def term(c, sigma, name):
+        rounded_coef = np.round(c, precision)
         if rounded_coef == 0 and sigma is None:
             return ""
         elif sigma is None:
-            return f"{coef:.{precision}f} {name}"
+            return f"{c:.{precision}f} {name}"
         elif rounded_coef == 0 and np.round(sigma, precision) == 0:
             return ""
         else:
-            return f"({coef:.{precision}f} {pm} {sigma:.{precision}f}) {name}"
+            return f"({c:.{precision}f} {pm} {sigma:.{precision}f}) {name}"
 
     errors = errors if errors is not None else repeat(None)
-    components = map(term, coef, errors, input_features)
+    # components = map(term, coef, errors, input_features)
+    components = [term(c, e, i) for c, e, i in zip(coef, errors, input_features)]
     eq = " + ".join(filter(bool, components))
 
     if not eq or intercept or error_intercept is not None:
@@ -60,7 +61,7 @@ def equation(pipeline, input_features=None, precision=3, input_fmt=None):
         input_features = [input_fmt(i) for i in input_features]
     coef = pipeline.steps[-1][1].coef_
     intercept = pipeline.steps[-1][1].intercept_
-    return print_model(coef, input_features, intercept, precision=precision)
+    return print_model(coef, input_features, intercept=intercept, precision=precision)
 
 
 class RationalFunctionMixin:
@@ -89,7 +90,7 @@ class RationalFunctionMixin:
         if self.intercept_:
             nominator += "+ {}".format(self.intercept_)
         if np.any(self.coef_denominator_):
-            denominator = print_model(self.coef_denominator_, input_features, 1)
+            denominator = print_model(self.coef_denominator_, input_features, intercept=1)
             model = "(" + nominator + ") / (" + denominator + ")"
         else:
             model = nominator

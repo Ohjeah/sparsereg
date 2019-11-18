@@ -1,8 +1,13 @@
+"""
+SINDy Example
+=============
+"""
 import warnings
 
 import numpy as np
 from scipy.integrate import odeint
-from sklearn.model_selection import KFold, GridSearchCV
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import KFold
 from sklearn.utils import check_random_state
 
 from sparsereg.model import SINDy
@@ -29,11 +34,7 @@ with warnings.catch_warnings():  # suppress matrix illconditioned warning
     grid.fit(x_train)
 selected_model = grid.best_estimator_
 print("Score on test data ", selected_model.score(x_test))
-print(
-    "Selected hyperparameter (alpha, threshold): ",
-    selected_model.alpha,
-    selected_model.threshold,
-)
+print("Selected hyperparameter (alpha, threshold): ", selected_model.alpha, selected_model.threshold)
 for i, eq in enumerate(selected_model.equations()):
     print("dx_{} / dt = ".format(i), eq)
 print(

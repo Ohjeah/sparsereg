@@ -3,12 +3,15 @@ Overview
 
 .. include:: ../README.rst
 
-API Documentation
------------------
+
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 4
 
+   Examples <examples/index.rst>
    api/modules
 
 

@@ -1,3 +1,7 @@
+"""
+Group Lasso
+==========
+"""
 from collections import defaultdict
 
 import numpy as np
@@ -32,4 +36,8 @@ l = Lasso()
 for model in [sgl, l]:
     grid = GridSearchCV(model, params, n_jobs=1, scoring=scorer, error_score=0).fit(features_train, y_train)
     print(grid.score(features_test, y_test))
-    print(print_model(grid.best_estimator_.coef_, pre.get_feature_names(), grid.best_estimator_.intercept_))
+    print(
+        print_model(
+            grid.best_estimator_.coef_, pre.get_feature_names(), intercept=grid.best_estimator_.intercept_
+        )
+    )

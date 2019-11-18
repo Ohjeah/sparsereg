@@ -1,3 +1,7 @@
+"""
+FFX
+==========
+"""
 import numpy as np
 
 from sparsereg.model.ffx import FFX
@@ -12,7 +16,7 @@ model = FFX(
     target_score=1e-5,
     max_complexity=250,
     num_alphas=1000,
-    eps=1E-70,
+    eps=1e-70,
     rational=True,
 )
 model.fit(x, y)
