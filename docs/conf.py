@@ -18,7 +18,6 @@ master_doc = "index"
 
 extensions = [
     "sphinx.ext.mathjax",
-    "recommonmark",
     "sphinxcontrib.apidoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
@@ -28,7 +27,6 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_autodoc_typehints",
-    "sphinx_click.ext",
     "sphinx_gallery.gen_gallery",
 ]
 

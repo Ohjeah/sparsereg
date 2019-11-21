@@ -16,7 +16,7 @@ def scale_sigma(est, X_offset, X_scale):
         std_intercept = np.sqrt(np.abs(X_offset @ np.diag(est.sigma_).T))
     else:
         std_intercept = 0
-    sigma = np.diag(est.sigma_) / ( X_scale + eps )
+    sigma = np.diag(est.sigma_) / (X_scale + eps)
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore")
         std_coef = np.sqrt(sigma)
