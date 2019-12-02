@@ -123,8 +123,8 @@ def jmap(g, H, ae0, be0, af0, bf0, max_iter=1000, tol=1e-4, rcond=None, observer
 
     HtH = H.T @ H
     Htg = H.T @ g
-    ve0 = be0 / ae0
-    vf0 = bf0 / af0
+    ve0 = be0 / (ae0 - 1)
+    vf0 = bf0 / (af0 - 1)
     lambda_ = ve0 / vf0
     fh, *_ = np.linalg.lstsq(HtH + lambda_ * np.eye(n_samples, n_samples), Htg, rcond=rcond)
 
@@ -133,12 +133,12 @@ def jmap(g, H, ae0, be0, af0, bf0, max_iter=1000, tol=1e-4, rcond=None, observer
     for _ in range(max_iter):
         dg = g - H @ fh
 
-        ae = ae0 + 0.5
+        ae = ae0 + 1.5
         be = be0 + 0.5 * dg ** 2
         ve = be / ae + eps
         iVe = np.diag(1 / ve)
 
-        af = af0 + 0.5
+        af = af0 + 1.5
         bf = bf0 + 0.5 * fh ** 2
         vf = bf / af + eps
         iVf = np.diag(1.0 / vf)
@@ -155,6 +155,5 @@ def jmap(g, H, ae0, be0, af0, bf0, max_iter=1000, tol=1e-4, rcond=None, observer
     else:
         warnings.warn(f"jmap did not converge after {max_iter} iterations.", ConvergenceWarning)
 
-    # sigma = np.diag(np.diag(np.linalg.inv(HR)))
     sigma = np.linalg.inv(HR)
     return fh, vf, ve, sigma
